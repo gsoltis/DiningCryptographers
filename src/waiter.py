@@ -3,15 +3,26 @@ from argparse import ArgumentParser
 
 from utils import load_pubnub
 
-def recv(msg):
-    print msg
-    return False
 
 def inform_diners(pubsub, num_diners):
-    #history = pubsub.history({'channel': 'waiter', 'limit': num_diners + 1})
     diners = []
-    #while len(diners) < num_diners:
-    pubsub.subscribe({'channel': 'waiter', 'callback': recv})
+    results = []
+    def recv(msg):
+
+        if 'my_bit' in msg:
+            results.append(msg)
+            if len(results) == num_diners:
+                pubsub.publish({'channel': 'to_waiter', 'message': 'the bill is settled'})
+                return False
+        else:
+            name = msg['name']
+            diners.append(name)
+            if len(diners) == num_diners:
+                pubsub.publish({'channel': 'to_waiter', 'message': {'diners': diners}})
+        return True
+
+    pubsub.subscribe({'channel': 'to_waiter', 'callback': recv})
+    pubsub.publish({'channel': 'to_waiter', 'message': {'diners': diners}})
 
 if __name__ == '__main__':
     parser = ArgumentParser()
