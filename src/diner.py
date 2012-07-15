@@ -97,7 +97,6 @@ def dine(pubsub, is_payer):
     names.remove(name)
     print 'establishing secrets'
     secrets = establish_secrets(name, names, pubsub)
-    print name, secrets
     result = announce_bit(name, is_payer, secrets, pubsub, results_q)
     if result:
         print 'A diner paid'
@@ -109,11 +108,9 @@ def announce_bit(name, is_payer, secrets, pubsub, results_q):
     xor_list = lambda l: reduce(lambda accum, bit: accum ^ bit, l)
     bit = xor_list(secrets.values())
     if is_payer:
-        print 'is payer'
         bit = int(not bit)
 
     pubsub.publish({'channel': 'to_waiter', 'message': {'my_bit': bit, 'name': name}})
-    print 'my_bit: %i' % bit
     results = []
     while len(results) < len(secrets):
         item = results_q.get()
@@ -121,7 +118,6 @@ def announce_bit(name, is_payer, secrets, pubsub, results_q):
         if item['name'] != name:
             results.append(item['my_bit'])
     results.append(bit)
-    print results
     bit = xor_list(results)
     return bool(bit)
 
