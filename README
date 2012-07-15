@@ -1,0 +1,18 @@
+Proof of concept for running the Dining Philosophers algorithm using a pubsub backend.
+
+To run:
+    run the waiter (waiter.py) with the expected number of diners
+    run each diner (diner.py), selecting either one or none of them to be the payer (-p)
+
+Each diner will establish a shared secret with each other diner.
+After that, they each determine whether the NSA paid or one of the diners paid.
+
+The waiter exists for diner discovery and coordination but otherwise does not assist the process.
+It could be replaced with other, out of band config and coordination.
+
+The code suffers all of the drawbacks of the original algorithm, most notably collisions.
+If an even number of diners indicate that they paid, the wrong answer will be computed.
+
+In addition, it is assumed that diners are obeying the protocol as well as not eavesdropping on channels they don't belong to.
+
+A minimum of three diners is required.
