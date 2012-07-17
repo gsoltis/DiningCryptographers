@@ -16,3 +16,13 @@ If an even number of diners indicate that they paid, the wrong answer will be co
 In addition, it is assumed that diners are obeying the protocol as well as not eavesdropping on channels they don't belong to.
 
 A minimum of three diners is required.
+
+To run firebase implementation:
+
+requests module is required to be installed (pip install requests)
+
+Currently hardcoded to 3 diners. Will be updating this in the future.
+To run the waiter: ./firebase.py
+To run a diner: ./firebase.py -d [-p] # include the -p as well if this diner is paying
+
+So, run the waiter and then 3 diners once the waiter indicates that it is ready
