@@ -4,6 +4,12 @@ To run:
     run the waiter (waiter.py) with the expected number of diners
     run each diner (diner.py), selecting either one or none of them to be the payer (-p)
 
+For pubnub, a config file, pubnub_keys.cfg, is required in the src folder, with the following format:
+[pubnub]
+publish: <publish key>
+subscribe: <subscribe key>
+secret: <secret key>
+
 Each diner will establish a shared secret with each other diner.
 After that, they each determine whether the NSA paid or one of the diners paid.
 
@@ -20,6 +26,10 @@ A minimum of three diners is required.
 To run firebase implementation:
 
 requests module is required to be installed (pip install requests)
+
+config required: firebase.cfg file, alongside the firebase.py file, with the following format:
+[firebase]
+root: <your firebase root>
 
 Currently hardcoded to 3 diners. Will be updating this in the future.
 To run the waiter: ./firebase.py
