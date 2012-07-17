@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>A waiter, serving dining cryptographers</title>
+        <script type="text/javascript" src="http://static.firebase.com/v0/firebase.js"></script>
+        <script type="text/javascript">
+        function serve(num_diners, output) {
+            var fb = new Firebase('<firebase url here>');
+            var diners = fb.child('diners');
+            diners.remove();
+            diners.on('value', function(data) {
+                output(data.val());
+            });
+            /*table.set({'diners': []}, function(success) {
+                if (success) {
+                    output('saved diner list');
+                } else {
+                    output('failed to save diner list');
+                }
+            });*/
+            output('Ready for the ' + num_diners + ' diners');
+        }
+        </script>
+    </head>
+    <body>
+        <label for="num-diners">How many diners are we expecting?</label>
+        <input type="text" id="num-diners" />
+        <button id="btn-dine">Serve!</button>
+        <ul id="output"></ul>
+        <script type="text/javascript">
+        
+        var btn = document.getElementById('btn-dine');
+        btn.onclick = function(e) {
+            var input = document.getElementById('num-diners');
+            input.disabled = true;
+            var num_diners = parseInt(document.getElementById('num-diners').value);
+            var output = function(str) {
+                if (console) {
+                    console.log(str);
+                }
+                var li = document.createElement('li');
+                li.innerText = str;
+                document.getElementById('output').appendChild(li);
+            };
+            serve(num_diners, output);
+        };
+        </script>
+    </body>
+</html>

@@ -3,3 +3,4 @@ pubnub_keys.cfg
 .project
 .pydevproject
 *.pyc
+firebase.cfg

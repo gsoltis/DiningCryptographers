@@ -10,3 +10,5 @@ def load_pubnub(config_file):
     secret = config.get('pubnub', 'secret')
     pn = Pubnub(pub_key, sub_key, secret, ssl_on=True)
     return pn
+
+xor_list = lambda l: reduce(lambda accum, bit: accum ^ bit, l)

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>A diner, dining with cryptographers</title>
+        <script type="text/javascript" src="http://static.firebase.com/v0/firebase.js"></script>
+        <script type="text/javascript">
+        function genName() {
+            var name = '';
+            for (var i = 0; i < 36; ++i) {
+                name = name + parseInt(Math.random() * 10);
+            }
+            return name;
+        }
+        var allNames = null;
+        
+        function establishSecrets(output) {
+            output('establishing secrets');
+        }
+        
+        function testFb(output) {
+            var fb = new Firebase('<firebase url here>');
+            var waiter = fb.child('diners');
+            waiter.on('value', function(data) {
+                allNames = data.val();
+                if (data.hasChild('done')) {
+                    establishSecrets(output);
+                }
+            });
+            var name = genName();
+            waiter.push(name);
+        }
+        </script>
+    </head>
+    <body>
+        <p>
+            <label for="chk-paid">Did this diner pay?</label>
+            <input type="checkbox" id="chk-paid" />
+        </p>
+        <p>
+            <label for="table-name">Which table are you at?</label>
+            <input type="text" id="table-name" value="" />
+        </p>
+        <button id="btn-dine">Dine!</button>
+        <ul id="output"></ul>
+        <script type="text/javascript">
+        var btn = document.getElementById('btn-dine');
+        btn.onclick = function(e) {
+            var paidInput = document.getElementById('chk-paid');
+            paidInput.disabled = true;
+            var paid = paidInput.checked;
+            var tableInput = document.getElementById('table-name');
+            tableInput.disabled = true;
+            var tableName = tableInput.value;
+            var output = function(str) {
+                if (console) {
+                    console.log(str);
+                }
+                var li = document.createElement('li');
+                li.innerText = str;
+                document.getElementById('output').appendChild(li);
+            };
+            testFb(output);
+        }
+        </script>
+    </body>
+</html>
